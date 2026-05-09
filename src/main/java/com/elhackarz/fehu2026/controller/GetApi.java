@@ -1,26 +1,27 @@
 package com.elhackarz.fehu2026.controller;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.bind.annotation.*;
+
+import com.elhackarz.fehu2026.models.Assignments;
 import com.elhackarz.fehu2026.models.Lectures;
 import com.elhackarz.fehu2026.models.Subjects;
+import com.elhackarz.fehu2026.repositories.AssignmentsRepo;
 import com.elhackarz.fehu2026.repositories.LecturesRepo;
-import org.springframework.web.bind.annotation.GetMapping;
 import com.elhackarz.fehu2026.repositories.SubjectsRepo;
-
 @RestController
 @RequestMapping("/api")
 public class GetApi {
     private final LecturesRepo lecturesrepo;
     private final SubjectsRepo subjectsrepo;
-
-    public GetApi(LecturesRepo lecturesrepo, SubjectsRepo subjectsrepo) {
+ private final AssignmentsRepo AssignmentsRepo;
+    public GetApi(LecturesRepo lecturesrepo, SubjectsRepo subjectsrepo,AssignmentsRepo AssignmentsRepo) {
         this.lecturesrepo = lecturesrepo;
         this.subjectsrepo = subjectsrepo;
+        this.AssignmentsRepo = AssignmentsRepo;
     }
-
+   
     @PostMapping("/addsubject")
     public Subjects addSubject(@RequestBody Subjects subject) {
         return subjectsrepo.save(subject);
@@ -46,4 +47,16 @@ public class GetApi {
         return subjectsrepo.findAll();
     }
 
+    @GetMapping("/Assignments/{subjectId}")
+    public List<Assignments> getExamsBySubject(@PathVariable Long subjectId) {
+    return AssignmentsRepo.findBySubjectId(subjectId);
+    }
+
+
 }
+
+ 
+
+ 
+
+    
